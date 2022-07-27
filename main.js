@@ -13,31 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const core = require('@actions/core')
-const { checkLicense } = require("./license");
-const { readFile } = require("./file")
 const chalk = require('chalk')
-fs = require('fs');
-glob = require('glob')
-const configFilePath = ".github/license-check.json"
-const fileData = readFile(configFilePath)
-if (fileData) {
- let dataObject = JSON.parse(fileData)
- let copyrightContent = dataObject.copyright
- let ignore = dataObject.ignore
- let startDateLicense = dataObject.startDateLicense
- glob(
-     "**/*.*",
-     {cwd: process.cwd(), ignore}, async (err, fileNames) => {
-         const error = await checkLicense(fileNames, {
-             copyrightContent: copyrightContent,
-             startDateLicense: startDateLicense
-         })
-         if (error) {
-             console.log(chalk.red(error.title))
-             console.log(chalk.red(error.details))
-             core.setFailed('Action failed');
-         }
-     }
- )
+const fs = require('fs');
+const glob = require('glob');
+const core = require('@actions/core');
+const { checkLicense } = require("./license");
+const configFilePath = core.getInput('config-path') || ".github/license-check.json"
+try {
+    const fileData = fs.readFileSync(configFilePath, 'utf-8')
+    if (fileData) {
+        const dataObject = JSON.parse(fileData)
+        const { ignore, startDateLicense, copyright: copyrightContent } = dataObject
+        glob(
+            "**/*.*",
+            {cwd: process.cwd(), ignore}, async (err, fileNames) => {
+                const error = await checkLicense(fileNames, {
+                    copyrightContent: copyrightContent,
+                    startDateLicense: startDateLicense
+                })
+                if (error) {
+                    console.log(chalk.red(error.title))
+                    console.log(chalk.red(error.details))
+                    core.setFailed('Action failed');
+                }
+            }
+        )
+    }
+} catch (err) {
+    core.setFailed(err.message);
 }
+

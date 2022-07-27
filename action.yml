@@ -4,6 +4,9 @@ inputs:
   token:
     description: 'Github Token'
     required: true
+  config-path:
+    description: 'Specify license-check.json path'
+    required: false
 outputs:
   time:
     description: 'The time we greeted you'
