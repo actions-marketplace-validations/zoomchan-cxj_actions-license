@@ -3,7 +3,7 @@ This action fork from [actions-license](https://github.com/thalleslmF/actions-li
 
 # Usage
 
-Create `config.json` like the following:
+Create `.github/license-check.json` like the following:
 
 ```
 "copyright": [
