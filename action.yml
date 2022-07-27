@@ -2,7 +2,7 @@ name: 'Check License or Date from github PR files'
 description: 'Check License or Date from github PR files'
 inputs:
   token:
-    description: 'Github token'
+    description: 'Github Token'
     required: true
 outputs:
   time:
@@ -10,3 +10,6 @@ outputs:
 runs:
   using: 'node16'
   main: 'main.js'
+branding:
+  icon: 'check'
+  color: 'green'
