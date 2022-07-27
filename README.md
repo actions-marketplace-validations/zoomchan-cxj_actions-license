@@ -1,6 +1,5 @@
-# actions-license-1
-This action checks the license headers in the files of  pull requests
-Inspired on [Deno License Checker]
+# actions-license
+This action fork from [actions-license](https://github.com/thalleslmF/actions-license)
 
 # Usage
 
@@ -27,7 +26,6 @@ Create `config.json` like the following:
   ],
   ``` 
 [Deno license checker]: https://github.com/kt3k/deno_license_checker
-  
- 
+
  
 ```
