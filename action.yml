@@ -7,6 +7,12 @@ inputs:
   config-path:
     description: 'Specify license-check.json path'
     required: false
+  commit-from:
+    description: 'specify the start of commit hash'
+    required: false
+  commit-to:
+    description: 'specify the end of commit hash'
+    required: false
 outputs:
   time:
     description: 'The time we greeted you'

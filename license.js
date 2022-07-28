@@ -111,7 +111,7 @@ async function getCreationYear(file, config) {
     return new Date(creationDate).getFullYear()
 }
 
-const checkLicense = async (fileNames, config) => {
+const checkLicense = async (fileNames, config, commitFrom, commitTo) => {
     const token = core.getInput('token')
 
     const octokit = github.getOctokit(token)
@@ -133,7 +133,7 @@ const checkLicense = async (fileNames, config) => {
     const responseCompare = await octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
         owner: config.owner,
         repo: config.repo,
-        basehead: `${responsePr.data.base.sha}...${responsePr.data.head.sha}`
+        basehead: `${commitFrom || responsePr.data.base.sha}...${commitTo || responsePr.data.head.sha}`
     })
     const filesPr = responseCompare.data.files.map(
         file => {

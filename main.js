@@ -15,29 +15,29 @@
  */
 const chalk = require('chalk')
 const fs = require('fs');
-const glob = require('glob');
+const fg = require('fast-glob');
 const core = require('@actions/core');
 const { checkLicense } = require("./license");
-const configFilePath = core.getInput('config-path') || ".github/license-check.json"
+const configFilePath = core.getInput('config-path') || ".github/license-check.json";
+const commitFrom = core.getInput('commit-from');
+const commitTo = core.getInput('commit-to');
 try {
     const fileData = fs.readFileSync(configFilePath, 'utf-8')
     if (fileData) {
         const dataObject = JSON.parse(fileData)
-        const { ignore, startDateLicense, copyright: copyrightContent } = dataObject
-        glob(
-            "**/*.*",
-            {cwd: process.cwd(), ignore}, async (err, fileNames) => {
-                const error = await checkLicense(fileNames, {
-                    copyrightContent: copyrightContent,
-                    startDateLicense: startDateLicense
-                })
-                if (error) {
-                    console.log(chalk.red(error.title))
-                    console.log(chalk.red(error.details))
-                    core.setFailed('Action failed');
-                }
-            }
-        )
+        const { ignore, include, startDateLicense, copyright: copyrightContent } = dataObject;
+        const fileNames = fg.sync(include || "**/*.*", { cwd: process.cwd(), ignore });
+        const error = await checkLicense(fileNames, {
+            copyrightContent: copyrightContent,
+            startDateLicense: startDateLicense,
+            commitFrom,
+            commitTo,
+        })
+        if (error) {
+            console.log(chalk.red(error.title))
+            console.log(chalk.red(error.details))
+            core.setFailed('Action failed');
+        }
     }
 } catch (err) {
     core.setFailed(err.message);
