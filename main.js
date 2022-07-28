@@ -21,25 +21,28 @@ const { checkLicense } = require("./license");
 const configFilePath = core.getInput('config-path') || ".github/license-check.json";
 const commitFrom = core.getInput('commit-from');
 const commitTo = core.getInput('commit-to');
-try {
-    const fileData = fs.readFileSync(configFilePath, 'utf-8')
-    if (fileData) {
-        const dataObject = JSON.parse(fileData)
-        const { ignore, include, startDateLicense, copyright: copyrightContent } = dataObject;
-        const fileNames = fg.sync(include || "**/*.*", { cwd: process.cwd(), ignore });
-        const error = await checkLicense(fileNames, {
-            copyrightContent: copyrightContent,
-            startDateLicense: startDateLicense,
-            commitFrom,
-            commitTo,
-        })
-        if (error) {
-            console.log(chalk.red(error.title))
-            console.log(chalk.red(error.details))
-            core.setFailed('Action failed');
+(async function () {
+    try {
+        const fileData = fs.readFileSync(configFilePath, 'utf-8')
+        if (fileData) {
+            const dataObject = JSON.parse(fileData)
+            const { ignore, include, startDateLicense, copyright: copyrightContent } = dataObject;
+            const fileNames = fg.sync(include || "**/*.*", { cwd: process.cwd(), ignore });
+            const error = await checkLicense(fileNames, {
+                copyrightContent: copyrightContent,
+                startDateLicense: startDateLicense,
+                commitFrom,
+                commitTo,
+            })
+            if (error) {
+                console.log(chalk.red(error.title))
+                console.log(chalk.red(error.details))
+                core.setFailed('Action failed');
+            }
         }
+    } catch (err) {
+        core.setFailed(err.message);
     }
-} catch (err) {
-    core.setFailed(err.message);
-}
+})();
+
 
