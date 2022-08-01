@@ -1,41 +1,21 @@
 {
   "copyright": [
     "Copyright",
-    "Licensed under the Apache License, Version 2.0 (the \"License\");"
+    "Licensed under the **, Version 2.0 (the \"License\");"
   ],
   "include": [
-    "**/*.{ts,tsx,js,jsx,vue,ejs,mjs,.es6}",
-    "**/*.{css,less,scss}",
-    "**/*.{h,hpp,hh,h++,hxx}",
-    "**/*.{c,cc,c++,cpp,C,cxx}",
-    "**/*.{m,mm,swift,podspec}",
-    "**/*.{htm,html,xml,xhtm,xhtml}",
-    "**/*.cmake",
-    "**/*.java",
-    "**/*.cfg",
-    "**/*.txt",
-    "**/*.sh",
-    "**/*.yaml",
-    "**/*.bat",
-    "**/*.dart",
-    "**/*.py"
+    "**/*.*"
   ],
   "ignore": [
     "**/node_modules/**",
-    "**/AUTHORS/**",
     "**/.git/**",
     "**/.gradle/**",
-    "**/*.xcworkspace/**",
     "**/.DS_Store/**",
     "**/.nyc_output/**",
     "**/.vscode/**",
     "**/.vs/**",
     "**/.idea/**",
-    "**/.externalNativeBuild/**",
-    "**/.cxx/**",
-    "docs/**",
-    ".github/**",
-    ".husky/**"
+    "**/*.xcworkspace/**"
   ],
   "startDateLicense": 2020
 }

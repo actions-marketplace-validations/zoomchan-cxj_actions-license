@@ -116,7 +116,6 @@ const checkLicense = async (fileNames, config) => {
     const octokit = github.getOctokit(token);
     const owner = github.context.payload.repository.owner.login;
     const repo = github.context.payload.repository.name;
-    console.log(`original commit from ${commitFrom} to ${commitTo}`);
     if (!commitFrom && !commitTo) {
         const prNumber = github.context.payload.pull_request.number
         config = {
@@ -132,8 +131,8 @@ const checkLicense = async (fileNames, config) => {
         }));
         commitFrom = responsePr.data.base.sha;
         commitTo = responsePr.data.head.sha;
-        console.log(`pr commit from ${responsePr.data.base.sha} to ${responsePr.data.head.sha}`);
     }
+    console.log(`commit from ${commitFrom} to ${commitTo}`);
     if (!commitFrom || !commitTo) {
         return {
             title: `The range of commit ids is not correct`,
