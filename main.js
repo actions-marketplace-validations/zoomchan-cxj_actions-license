@@ -19,8 +19,6 @@ const fg = require('fast-glob');
 const core = require('@actions/core');
 const { checkLicense } = require("./license");
 const configFilePath = core.getInput('config-path') || ".github/license-check.json";
-const commitFrom = core.getInput('commit-from');
-const commitTo = core.getInput('commit-to');
 (async function () {
     try {
         const fileData = fs.readFileSync(configFilePath, 'utf-8')
@@ -31,8 +29,6 @@ const commitTo = core.getInput('commit-to');
             const error = await checkLicense(fileNames, {
                 copyrightContent: copyrightContent,
                 startDateLicense: startDateLicense,
-                commitFrom,
-                commitTo,
             })
             if (error) {
                 console.log(chalk.red(error.title))
@@ -41,7 +37,7 @@ const commitTo = core.getInput('commit-to');
             }
         }
     } catch (err) {
-        core.setFailed(err.message);
+        core.setFailed(err);
     }
 })();
 
